@@ -6,6 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\images\Aparts\1.png" />
+    <Content Include="wwwroot\images\Aparts\2.png" />
+    <Content Include="wwwroot\images\Aparts\3.png" />
+    <Content Include="wwwroot\images\Aparts\4.png" />
+    <Content Include="wwwroot\images\Aparts\41.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
   <ItemGroup>

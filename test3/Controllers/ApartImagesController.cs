@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using test3.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace test3.Controllers
 {
@@ -19,6 +20,7 @@ namespace test3.Controllers
         }
 
         // GET: ApartImages
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var eadiApartDbContext = _context.ApartImage.Include(a => a.Apartment);
@@ -122,6 +124,7 @@ namespace test3.Controllers
         }
 
         // GET: ApartImages/Delete/5
+        
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
