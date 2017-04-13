@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using test3.Data;
 
 namespace test3
 {
@@ -19,7 +20,7 @@ namespace test3
                 .UseApplicationInsights()
                 .Build();
 
-            host.Run();
+                host.Run();
         }
     }
 }
