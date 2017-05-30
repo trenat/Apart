@@ -12,9 +12,16 @@
             <li>
                 <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Witaj @MyUserManager.GetUserName(User)!</a>
             </li>
+        @if (@MyUserManager.IsAdmin(User))
+         {
+            <li>
+                <a asp-area="" asp-controller="Admin" asp-action="Index">Admin Panel</a>
+            </li>
+        }
             <li>
                 <button type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
             </li>
+      
         </ul>
     </form>
 }

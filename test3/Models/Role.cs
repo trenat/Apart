@@ -2,5 +2,6 @@
 {
     public class Role
     {
+        public bool isAdmin;
     }
-}
+} 

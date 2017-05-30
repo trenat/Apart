@@ -24,13 +24,37 @@ namespace test3.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var eadiApartDbContext = _context.Apartment    //From apartmnet
-                .OrderBy(r => Guid.NewGuid()).Take(4)     //Take 4 random apartments 
-                .Include(a => a.ApartImage); //.Take(1);               //And their photos
-               // .OrderBy(r => Guid.NewGuid()).Take(1);     //Just one of course
-            var xd = eadiApartDbContext.ToList();
-            return View(await eadiApartDbContext.ToListAsync());
+            int maxApartId = _context.Apartment.Max(apart => apart.ApartmentId);
+            Random rand = new Random((int)DateTime.Now.Ticks);
+            HashSet<int> numbers = new HashSet<int>();
+            while (numbers.Count < 4)
+            {
+                numbers.Add(rand.Next(1, maxApartId + 1));
+            }
+
+            var d = _context.Apartment
+                .Join(_context.ApartImage,
+                    apart => apart.ApartmentId,
+                    image => image.ApartmentId,
+                    (apart, image) => new {Apartment = apart, ApartImage = image})              //połącz tabele apartament z tabelą obrazki apartamentów
+                     .Where(result => (numbers.Contains(result.Apartment.ApartmentId)) &&       //wybierz tylko te apartamenty które zostały wylosowane (4 apartamenty)
+                                 (result.ApartImage == _context.ApartImage                          
+                                 .Where(r => r.ApartmentId.Equals(result.ApartImage.ApartmentId))   //Dla każdego apartamentu
+                                 .OrderBy(x => Guid.NewGuid())                                       //Przesortuj losowo obrazki
+                                 .FirstOrDefault()                                                   //i weź pierwszy
+                                 ))
+                                 .Select(x => new HomeViewModel()                                    //Wynik zapisz jako HomeViewModel
+                                 {
+                                    ID = x.Apartment.ApartmentId,
+                                    ImagePath = x.ApartImage.ImagePath,
+                                    ApartmentPrice = x.Apartment.PriceBasic,
+                                 });
+
+            
+            
+            return View(d);
         }
 
     }
 }
+

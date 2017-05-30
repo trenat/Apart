@@ -13,9 +13,9 @@ namespace test3.Data
         }
 
         public int ApartmentId { get; set; }
+        public string Adress { get; set; }
         public string Description { get; set; }
         public string Location { get; set; }
-        public string Adress { get; set; }
         public int OwnerId { get; set; }
         public decimal PriceBasic { get; set; }
         public int RoomSize { get; set; }

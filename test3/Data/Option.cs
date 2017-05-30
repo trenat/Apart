@@ -11,8 +11,8 @@ namespace test3.Data
         }
 
         public int OptionId { get; set; }
-        public int? Name { get; set; }
         public string ImagePath { get; set; }
+        public int? Name { get; set; }
 
         public virtual ICollection<ApartOption> ApartOption { get; set; }
     }

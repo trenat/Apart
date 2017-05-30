@@ -10,7 +10,8 @@ using Microsoft.EntityFrameworkCore;
 namespace test3.Services
 {
     public class ApartUserStore : IUserStore<User>,
-                                  IUserPasswordStore<User>
+                                  IUserPasswordStore<User>,
+                                  IUserRoleStore<User>
     {
         private eadiApartDbContext _dbContext;
         private UserManager<User> tuser;
@@ -42,10 +43,10 @@ namespace test3.Services
             _dbContext.Dispose();
         }
 
-        public Task<User> FindByIdAsync(string userId, CancellationToken cancellationToken)
+        public Task<User> FindByIdAsync(string UserID, CancellationToken cancellationToken)
         {
             
-            return _dbContext.User.FirstOrDefaultAsync<User>(b => b.UserID.ToString() == userId);
+            return _dbContext.User.FirstOrDefaultAsync<User>(b => b.UserID.ToString() == UserID);
         }
 
         public Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
@@ -105,6 +106,36 @@ namespace test3.Services
         }
 
         public PasswordVerificationResult VerifyHashedPassword(User user, string hashedPassword, string providedPassword)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AddToRoleAsync(User user, string roleName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveFromRoleAsync(User user, string roleName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IList<string>> GetRolesAsync(User user, CancellationToken cancellationToken)
+        {
+            IList<String> roles;
+            if (user.Admin == true)
+                roles = new List<string>(){"Admin"};
+            else
+                roles = new List<string>(){ "Admin" };
+            return Task.FromResult(roles);
+        }
+
+        public Task<bool> IsInRoleAsync(User user, string roleName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IList<User>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

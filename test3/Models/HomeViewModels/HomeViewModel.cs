@@ -7,7 +7,8 @@ namespace test3.Models.HomeViewModels
 {
     public class HomeViewModel
     {
-        public int ApartmentId { get; set; }
+        public decimal ApartmentPrice { get; set; }
         public string ImagePath { get; set; }
+        public int ID { get; set; }
     }
 }

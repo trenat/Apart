@@ -13,7 +13,7 @@ namespace test3.Data
         public virtual DbSet<Rate> Rate { get; set; }
         public virtual DbSet<Reservation> Reservation { get; set; }
         public virtual DbSet<User> User { get; set; }
-       
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
@@ -22,18 +22,15 @@ namespace test3.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder
-             .HasAnnotation("ProductVersion", "1.1.1")
-             .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
             modelBuilder.Entity<ApartImage>(entity =>
             {
                 entity.HasKey(e => e.ImageId)
                     .HasName("PK_ApartImage");
 
-                entity.Property(e => e.ImageId)
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("ImageID");
+                entity.HasIndex(e => e.ApartmentId)
+                    .HasName("IX_ApartImage_ApartmentID");
+
+                entity.Property(e => e.ImageId).HasColumnName("ImageID");
 
                 entity.Property(e => e.ApartmentId).HasColumnName("ApartmentID");
 
@@ -53,9 +50,13 @@ namespace test3.Data
                 entity.HasKey(e => e.ApartOptionsId)
                     .HasName("PK_ApartOption");
 
-                entity.Property(e => e.ApartOptionsId)
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("ApartOptionsID");
+                entity.HasIndex(e => e.ApartmentId)
+                    .HasName("IX_ApartOption_ApartmentID");
+
+                entity.HasIndex(e => e.OptionId)
+                    .HasName("IX_ApartOption_OptionID");
+
+                entity.Property(e => e.ApartOptionsId).HasColumnName("ApartOptionsID");
 
                 entity.Property(e => e.ApartmentId).HasColumnName("ApartmentID");
 
@@ -76,9 +77,10 @@ namespace test3.Data
 
             modelBuilder.Entity<Apartment>(entity =>
             {
-                entity.Property(e => e.ApartmentId)
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("ApartmentID");
+                entity.HasIndex(e => e.OwnerId)
+                    .HasName("IX_Apartment_OwnerID");
+
+                entity.Property(e => e.ApartmentId).HasColumnName("ApartmentID");
 
                 entity.Property(e => e.Adress)
                     .IsRequired()
@@ -101,27 +103,30 @@ namespace test3.Data
 
             modelBuilder.Entity<Option>(entity =>
             {
-                entity.Property(e => e.OptionId)
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("OptionID");
+                entity.Property(e => e.OptionId).HasColumnName("OptionID");
 
                 entity.Property(e => e.ImagePath).HasColumnType("nchar(10)");
             });
 
             modelBuilder.Entity<Rate>(entity =>
             {
-                entity.Property(e => e.RateId)
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("RateID");
+                entity.Property(e => e.RateId).HasColumnName("RateID");
 
                 entity.Property(e => e.RateLevel).HasColumnType("numeric");
             });
 
             modelBuilder.Entity<Reservation>(entity =>
             {
-                entity.Property(e => e.ReservationId)
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("ReservationID");
+                entity.HasIndex(e => e.ApartmentId)
+                    .HasName("IX_Reservation_ApartmentID");
+
+                entity.HasIndex(e => e.ClientId)
+                    .HasName("IX_Reservation_ClientID");
+
+                entity.HasIndex(e => e.RateId)
+                    .HasName("IX_Reservation_RateID");
+
+                entity.Property(e => e.ReservationId).HasColumnName("ReservationID");
 
                 entity.Property(e => e.ApartmentId).HasColumnName("ApartmentID");
 
@@ -160,9 +165,7 @@ namespace test3.Data
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.Property(e => e.UserID)
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("UserID");
+                entity.Property(e => e.UserID).HasColumnName("UserID");
 
                 entity.Property(e => e.DateOfBirth).HasColumnType("date");
 
