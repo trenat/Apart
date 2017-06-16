@@ -166,9 +166,9 @@ namespace test3.Migrations
 
             modelBuilder.Entity("test3.Data.User", b =>
                 {
-                    b.Property<int>("UserID")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("UserID");
+                        .HasColumnName("UserId");
 
                     b.Property<bool?>("Admin");
 
@@ -196,7 +196,7 @@ namespace test3.Migrations
                     b.Property<string>("Surname")
                         .HasColumnType("nchar(30)");
 
-                    b.HasKey("UserID");
+                    b.HasKey("UserId");
 
                     b.ToTable("User");
                 });

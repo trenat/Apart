@@ -15,6 +15,8 @@ using test3.Models;
 using test3.Data;
 //using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using System.IO;
+using Microsoft.Extensions.FileProviders;
 
 namespace test3
 {
@@ -95,6 +97,7 @@ namespace test3
             }
 
             app.UseStaticFiles();
+    
             app.UseIdentity();
             app.UseMvc(routes =>
             {

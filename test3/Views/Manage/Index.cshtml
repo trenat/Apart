@@ -1,4 +1,4 @@
-@model IEnumerable<test3.Data.Apartment>
+ï»¿@model IEnumerable<test3.Data.Apartment>
 
 @{
     ViewData["Title"] = "Index";
@@ -8,11 +8,11 @@
 <h2>Index</h2>
     
 <h3>Twoje dane: </h3>
-Tutaj bêd¹ dane u¿ytkownika.
+Tutaj bÄ™dÄ… dane uÅ¼ytkownika.
     
 
 <h3>Twoje rezerwacje: </h3>
-Tutaj bêd¹ rezerwacje.
+Tutaj bÄ™dÄ… rezerwacje.
 
 <h3>Twoje Apartamenty: </h3>
 <table class="table">
@@ -58,7 +58,7 @@ Tutaj bêd¹ rezerwacje.
                 @Html.DisplayFor(modelItem => item.RoomSize)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Owner.UserID)
+                @Html.DisplayFor(modelItem => item.Owner.UserId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |

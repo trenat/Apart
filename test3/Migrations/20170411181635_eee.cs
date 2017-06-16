@@ -40,7 +40,7 @@ namespace test3.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    UserID = table.Column<int>(nullable: false)
+                    UserId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Admin = table.Column<bool>(nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "date", nullable: true),
@@ -54,7 +54,7 @@ namespace test3.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.UserID);
+                    table.PrimaryKey("PK_User", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -77,7 +77,7 @@ namespace test3.Migrations
                         name: "FK_Apartment_User",
                         column: x => x.OwnerID,
                         principalTable: "User",
-                        principalColumn: "UserID",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -156,7 +156,7 @@ namespace test3.Migrations
                         name: "FK_Reservation_User",
                         column: x => x.ClientID,
                         principalTable: "User",
-                        principalColumn: "UserID",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Reservation_Rate",

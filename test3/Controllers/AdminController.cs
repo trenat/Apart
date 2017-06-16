@@ -40,7 +40,7 @@ namespace test3.Controllers
             }
 
             var user = await _context.User
-                .SingleOrDefaultAsync(m => m.UserID == id);
+                .SingleOrDefaultAsync(m => m.UserId == id);
             if (user == null)
             {
                 return NotFound();
@@ -60,7 +60,7 @@ namespace test3.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,Name,Surname,EmailNormalized,Email,Password,HashSalt,DateOfBirth,PhoneNumber,Admin")] User user)
+        public async Task<IActionResult> Create([Bind("UserId,Name,Surname,EmailNormalized,Email,Password,HashSalt,DateOfBirth,PhoneNumber,Admin")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +78,7 @@ namespace test3.Controllers
                 return NotFound();
             }
 
-            var user = await _context.User.SingleOrDefaultAsync(m => m.UserID == id);
+            var user = await _context.User.SingleOrDefaultAsync(m => m.UserId == id);
             if (user == null)
             {
                 return NotFound();
@@ -91,9 +91,9 @@ namespace test3.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,Name,Surname,EmailNormalized,Email,DateOfBirth,PhoneNumber,Admin")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("UserId,Name,Surname,EmailNormalized,Email,DateOfBirth,PhoneNumber,Admin")] User user)
         {
-            if (id != user.UserID)
+            if (id != user.UserId)
             {
                 return NotFound();
             }
@@ -107,7 +107,7 @@ namespace test3.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.UserID))
+                    if (!UserExists(user.UserId))
                     {
                         return NotFound();
                     }
@@ -130,7 +130,7 @@ namespace test3.Controllers
             }
 
             var user = await _context.User
-                .SingleOrDefaultAsync(m => m.UserID == id);
+                .SingleOrDefaultAsync(m => m.UserId == id);
             if (user == null)
             {
                 return NotFound();
@@ -144,7 +144,7 @@ namespace test3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var user = await _context.User.SingleOrDefaultAsync(m => m.UserID == id);
+            var user = await _context.User.SingleOrDefaultAsync(m => m.UserId == id);
             _context.User.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -157,12 +157,12 @@ namespace test3.Controllers
                 return NotFound();
             }
 
-            var user = await _context.User.SingleOrDefaultAsync(m => m.UserID == id);
+            var user = await _context.User.SingleOrDefaultAsync(m => m.UserId == id);
             if (user == null)
             {
                 return NotFound();
             }
-            return View(new PasswordResetModel(){ID = user.UserID});
+            return View(new PasswordResetModel(){ID = user.UserId});
         }
 
         [HttpPost]
@@ -190,7 +190,7 @@ namespace test3.Controllers
 
         private bool UserExists(int id)
         {
-            return _context.User.Any(e => e.UserID == id);
+            return _context.User.Any(e => e.UserId == id);
         }
     }
 }

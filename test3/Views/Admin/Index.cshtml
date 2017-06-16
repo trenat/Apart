@@ -61,11 +61,11 @@
                 @Html.DisplayFor(modelItem => item.Admin)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.UserID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.UserID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.UserID">Delete</a> |
+                <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.UserId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.UserId">Delete</a> |
                 <br/>
-                <a asp-action="PasswordReset" asp-route-id="@item.UserID">Reset Password</a>
+                <a asp-action="PasswordReset" asp-route-id="@item.UserId">Reset Password</a>
             </td>
         </tr>
 }

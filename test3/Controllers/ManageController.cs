@@ -10,18 +10,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using test3.Data;
 using test3.Services;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace test3.Controllers
 {
     public class ManageController : Controller
     {
         private readonly eadiApartDbContext _context;
+        private readonly IHostingEnvironment _environment;
         private MyUserManager _userManager;
 
-        public ManageController(eadiApartDbContext context, MyUserManager userManager)
+        public ManageController(eadiApartDbContext context, IHostingEnvironment environment, MyUserManager userManager)
         {
             _context = context;
             _userManager = userManager;
+            _environment = environment;
         }
 
         // GET: Apartments
@@ -36,7 +40,7 @@ namespace test3.Controllers
 
             var eadiApartDbContext = _context.Apartment
                 .Include(a => a.Owner)
-                .Where(r => r.OwnerId == apUser.UserID)
+                .Where(r => r.OwnerId == apUser.UserId)
                 .Include(r => r.Owner.Reservation);
            
                 
@@ -69,7 +73,8 @@ namespace test3.Controllers
         // GET: Apartments/Create
         public IActionResult Create()
         {
-            ViewData["OwnerId"] = new SelectList(_context.User, "UserID", "UserID");
+            ViewData["OwnerId"] = new SelectList(_context.User, "UserId", "UserId");
+            ViewData["Options"] = _context.Option.Select(x => x).ToList();
             return View();
         }
 
@@ -82,12 +87,30 @@ namespace test3.Controllers
         {
             if (ModelState.IsValid)
             {
+               apartment.OwnerId = _userManager.GetUserAsync(HttpContext.User).Result.UserId;
                 _context.Add(apartment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["OwnerId"] = new SelectList(_context.User, "UserID", "UserID", apartment.OwnerId);
+            ViewData["OwnerId"] = new SelectList(_context.User, "UserId", "UserId", apartment.OwnerId);
             return View(apartment);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Upload(ICollection<IFormFile> files)
+        {
+            var uploads = Path.Combine(_environment.WebRootPath, "uploads");
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                    using (var fileStream = new FileStream(Path.Combine(uploads, getReference()+id.ToString())+ ".jpg"), FileMode.Create))  // ID
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+                }
+            }
+            return RedirectToAction("Index");
         }
 
         // GET: Apartments/Edit/5
@@ -103,7 +126,7 @@ namespace test3.Controllers
             {
                 return NotFound();
             }
-            ViewData["OwnerId"] = new SelectList(_context.User, "UserID", "UserID", apartment.OwnerId);
+            ViewData["OwnerId"] = new SelectList(_context.User, "UserId", "UserId", apartment.OwnerId);
             return View(apartment);
         }
 
@@ -139,7 +162,7 @@ namespace test3.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["OwnerId"] = new SelectList(_context.User, "UserID", "UserID", apartment.OwnerId);
+            ViewData["OwnerId"] = new SelectList(_context.User, "UserId", "UserId", apartment.OwnerId);
             return View(apartment);
         }
 

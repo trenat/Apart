@@ -11,7 +11,7 @@ namespace test3.Data
             Reservation = new HashSet<Reservation>();
         }
 
-        public int UserID { get; set; }
+        public int UserId { get; set; }
         public bool? Admin { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public string Email { get; set; }

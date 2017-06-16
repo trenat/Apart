@@ -1,0 +1,80 @@
+﻿@model test3.Data.Apartment
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Apartment</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Adress" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Adress" class="form-control" />
+                <span asp-validation-for="Adress" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Location" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Location" class="form-control" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PriceBasic" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PriceBasic" class="form-control" />
+                <span asp-validation-for="PriceBasic" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="RoomSize" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="RoomSize" class="form-control" />
+                <span asp-validation-for="RoomSize" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">More Options:</label>
+            <div class="col-md-10">
+                <input asp-for="RoomSize" class="form-control" />
+                <span asp-validation-for="RoomSize" class="text-danger"></span>
+            </div>
+        </div>
+        @foreach (var item in ViewData["Options"] as List <test3.Data.Option>)
+        {
+        <div class="form-group">
+            <div class="col-md-offset-2">
+                <input type="checkbox" >
+                
+                <label class="col-md-offset-0 control-label"> &nbsp; &nbsp;@item.Name</label>
+            </div>
+        </div>
+        }
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+<form method="post" asp-action="Upload" asp-controller="Manage" enctype="multipart/form-data">
+    <input type="file" name="files" multiple/>
+    <input type="submit" value="Upload" />
+</form>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

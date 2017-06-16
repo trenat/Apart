@@ -43,10 +43,10 @@ namespace test3.Services
             _dbContext.Dispose();
         }
 
-        public Task<User> FindByIdAsync(string UserID, CancellationToken cancellationToken)
+        public Task<User> FindByIdAsync(string UserId, CancellationToken cancellationToken)
         {
             
-            return _dbContext.User.FirstOrDefaultAsync<User>(b => b.UserID.ToString() == UserID);
+            return _dbContext.User.FirstOrDefaultAsync<User>(b => b.UserId.ToString() == UserId);
         }
 
         public Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
@@ -66,7 +66,7 @@ namespace test3.Services
 
         public Task<string> GetUserIdAsync(User user, CancellationToken cancellationToken)
         {
-            return Task.FromResult<string>(user.UserID.ToString());
+            return Task.FromResult<string>(user.UserId.ToString());
         }
 
         public Task<string> GetUserNameAsync(User user, CancellationToken cancellationToken)

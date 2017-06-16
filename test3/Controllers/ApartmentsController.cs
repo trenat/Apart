@@ -50,7 +50,7 @@ namespace test3.Controllers
         // GET: Apartments/Create
         public IActionResult Create()
         {
-            ViewData["OwnerId"] = new SelectList(_context.User, "UserID", "UserID");
+            ViewData["OwnerId"] = new SelectList(_context.User, "UserId", "UserId");
             return View();
         }
 
@@ -67,7 +67,7 @@ namespace test3.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["OwnerId"] = new SelectList(_context.User, "UserID", "UserID", apartment.OwnerId);
+            ViewData["OwnerId"] = new SelectList(_context.User, "UserId", "UserId", apartment.OwnerId);
             return View(apartment);
         }
 
@@ -84,7 +84,7 @@ namespace test3.Controllers
             {
                 return NotFound();
             }
-            ViewData["OwnerId"] = new SelectList(_context.User, "UserID", "UserID", apartment.OwnerId);
+            ViewData["OwnerId"] = new SelectList(_context.User, "UserId", "UserId", apartment.OwnerId);
             return View(apartment);
         }
 
@@ -120,7 +120,7 @@ namespace test3.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["OwnerId"] = new SelectList(_context.User, "UserID", "UserID", apartment.OwnerId);
+            ViewData["OwnerId"] = new SelectList(_context.User, "UserId", "UserId", apartment.OwnerId);
             return View(apartment);
         }
 

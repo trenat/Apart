@@ -106,6 +106,8 @@ namespace test3.Data
                 entity.Property(e => e.OptionId).HasColumnName("OptionID");
 
                 entity.Property(e => e.ImagePath).HasColumnType("nchar(10)");
+
+                entity.Property(e => e.Name).HasColumnType("nchar(30)");
             });
 
             modelBuilder.Entity<Rate>(entity =>
@@ -165,7 +167,7 @@ namespace test3.Data
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.Property(e => e.UserID).HasColumnName("UserID");
+                entity.Property(e => e.UserId).HasColumnName("UserId");
 
                 entity.Property(e => e.DateOfBirth).HasColumnType("date");
 
