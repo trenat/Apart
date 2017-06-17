@@ -12,7 +12,7 @@ using test3.Data;
 using test3.Services;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
-
+using test3.Models.ManageViewModels;
 namespace test3.Controllers
 {
     public class ManageController : Controller
@@ -34,38 +34,37 @@ namespace test3.Controllers
             var apUser = await _userManager.GetUserAsync(HttpContext.User);
 
             if (apUser == null)
-            {
                 return NotFound();
-            }
 
             var eadiApartDbContext = _context.Apartment
                 .Include(a => a.Owner)
                 .Where(r => r.OwnerId == apUser.UserId)
-                .Include(r => r.Owner.Reservation);
-           
+                .Include(r => r.Owner.Reservation)
+                .Include(o => o.ApartOption)
+                .ThenInclude(o=> o.Option);
+            
+
+            return View(new ManageIndexViewModel()
+            {
+                Apartments = eadiApartDbContext,
+                User = apUser,
+                Reservations = new List<Reservation>()
                 
-                
-            return View(await eadiApartDbContext.ToListAsync());
+            });
         }
 
         // GET: Apartments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var apartment = await _context.Apartment
-                    .Include(a => a.Owner)
-                    .SingleOrDefaultAsync(m => m.ApartmentId == id)
-                ;
+                .Include(a => a.Owner)
+                .SingleOrDefaultAsync(m => m.ApartmentId == id);
+
             if (apartment == null)
-            {
                 return NotFound();
-            }
-
-
 
             return View(apartment);
         }
@@ -74,44 +73,60 @@ namespace test3.Controllers
         public IActionResult Create()
         {
             ViewData["OwnerId"] = new SelectList(_context.User, "UserId", "UserId");
-            ViewData["Options"] = _context.Option.Select(x => x).ToList();
-            return View();
+            //ViewData["Options"] = _context.Option.Select(x => x).ToList();
+            var model = new test3.Models.ManageViewModels.CreateApartmentViewModel();
+            model.Options = _context.Option.Select(x => new Opt() { Name = x.Name, isChecked = false }).ToList();
+            model.Apartment = new Apartment();
+            return View(model);
         }
 
         // POST: Apartments/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ApartmentId,Adress,Description,Location,OwnerId,PriceBasic,RoomSize")] Apartment apartment)
+        public async Task<IActionResult> Create(test3.Models.ManageViewModels.CreateApartmentViewModel model, ICollection<IFormFile> files)
         {
+            Apartment apartment = model.Apartment;
             if (ModelState.IsValid)
             {
-               apartment.OwnerId = _userManager.GetUserAsync(HttpContext.User).Result.UserId;
-                _context.Add(apartment);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            ViewData["OwnerId"] = new SelectList(_context.User, "UserId", "UserId", apartment.OwnerId);
-            return View(apartment);
-        }
+                apartment.OwnerId = _userManager.GetUserAsync(HttpContext.User).Result.UserId;
+                apartment.ApartOption = new List<ApartOption>();
 
-        [HttpPost]
-        public async Task<IActionResult> Upload(ICollection<IFormFile> files)
-        {
-            var uploads = Path.Combine(_environment.WebRootPath, "uploads");
-            foreach (var file in files)
-            {
-                if (file.Length > 0)
+                _context.Option.Load();
+                foreach (var option in model.Options)
                 {
-                    using (var fileStream = new FileStream(Path.Combine(uploads, getReference()+id.ToString())+ ".jpg"), FileMode.Create))  // ID
+                    if (option.isChecked == true)
                     {
-                        await file.CopyToAsync(fileStream);
+                        Option opt = _context.Option.Local.FirstOrDefault(x => x.Name == option.Name);
+                        apartment.ApartOption.Add(new ApartOption()
+                        {
+                            Apartment = apartment,
+                            OptionId =  opt.OptionId
+                        });
                     }
                 }
+
+                _context.Add(apartment);
+                _context.SaveChanges();
+                var uploads = Path.Combine(_environment.WebRootPath, "uploads");
+                foreach (var file in files)
+                {
+                    if (file.Length > 0)
+                    {
+                        using (var fileStream = new FileStream(Path.Combine(uploads, Guid.NewGuid().GetHashCode().ToString() + ".jpg"), FileMode.Create))  // ID
+                        {
+                            await file.CopyToAsync(fileStream);
+                        }
+                    }
+                }
+
+                ViewData["OwnerId"] = new SelectList(_context.User, "UserId", "UserId", apartment.OwnerId);
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+
+            return View(model);
         }
+
+
 
         // GET: Apartments/Edit/5
         public async Task<IActionResult> Edit(int? id)

@@ -18,7 +18,12 @@ namespace test3.Data
         public string Location { get; set; }
         public int OwnerId { get; set; }
         public decimal PriceBasic { get; set; }
-        public int RoomSize { get; set; }
+
+        public int RoomSize
+        {
+            get;
+            set;
+        }
 
         public virtual ICollection<ApartImage> ApartImage { get; set; }
         public virtual ICollection<ApartOption> ApartOption { get; set; }

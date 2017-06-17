@@ -1,4 +1,4 @@
-﻿@model test3.Data.Apartment
+﻿@model test3.Models.ManageViewModels.CreateApartmentViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -6,73 +6,82 @@
 
 <h2>Create</h2>
 
-<form asp-action="Create">
+<form asp-action="Create" enctype="multipart/form-data">
     <div class="form-horizontal">
         <h4>Apartment</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Adress" class="col-md-2 control-label"></label>
+            <label asp-for="Apartment.Adress" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Adress" class="form-control" />
-                <span asp-validation-for="Adress" class="text-danger"></span>
+                <input asp-for="Apartment.Adress" class="form-control" />
+                <span asp-validation-for="Apartment.Adress" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <label asp-for="Apartment.Description" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <input asp-for="Apartment.Description" class="form-control" />
+                <span asp-validation-for="Apartment.Description" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Location" class="col-md-2 control-label"></label>
+            <label asp-for="Apartment.Location" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
+                <input asp-for="Apartment.Location" class="form-control" />
+                <span asp-validation-for="Apartment.Location" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="PriceBasic" class="col-md-2 control-label"></label>
+            <label asp-for="Apartment.PriceBasic" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="PriceBasic" class="form-control" />
-                <span asp-validation-for="PriceBasic" class="text-danger"></span>
+                <input asp-for="Apartment.PriceBasic" class="form-control" />
+                <span asp-validation-for="Apartment.PriceBasic" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="RoomSize" class="col-md-2 control-label"></label>
+            <label asp-for="Apartment.RoomSize" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="RoomSize" class="form-control" />
-                <span asp-validation-for="RoomSize" class="text-danger"></span>
+                <input asp-for="Apartment.RoomSize" class="form-control" />
+                <span asp-validation-for="Apartment.RoomSize" class="text-danger"></span>
             </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Photos:</label>
+            <input type="file" name="files" accept="jpeg|jpg|png" multiple />
         </div>
         <div class="form-group">
             <label class="col-md-2 control-label">More Options:</label>
-            <div class="col-md-10">
-                <input asp-for="RoomSize" class="form-control" />
-                <span asp-validation-for="RoomSize" class="text-danger"></span>
-            </div>
-        </div>
-        @foreach (var item in ViewData["Options"] as List <test3.Data.Option>)
-        {
-        <div class="form-group">
+
             <div class="col-md-offset-2">
-                <input type="checkbox" >
                 
-                <label class="col-md-offset-0 control-label"> &nbsp; &nbsp;@item.Name</label>
+                <table style="width: 100%;">
+
+                    @for (int i = 0; i < Model.Options.Count(); i++)
+                    {
+                        <tr>
+                            <td  class="form-group">&nbsp;&nbsp;&nbsp;&nbsp;
+                                @Html.HiddenFor(x => Model.Options[i].Name)
+                                <input asp-for=@Model.Options[i].isChecked type="checkbox">
+                                <span asp-validation-for=@Model.Options[i].isChecked class="text-danger"></span>
+                                <label>&nbsp;&nbsp; @Html.DisplayFor(x => x.Options[i].Name)
+                                </label>
+                            </td>
+                            <td></td>
+                        </tr>
+                    }
+                </table>
             </div>
         </div>
-        }
+
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
-</form>
-<form method="post" asp-action="Upload" asp-controller="Manage" enctype="multipart/form-data">
-    <input type="file" name="files" multiple/>
-    <input type="submit" value="Upload" />
 </form>
 <div>
     <a asp-action="Index">Back to List</a>

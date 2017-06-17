@@ -1,76 +1,125 @@
-﻿@model IEnumerable<test3.Data.Apartment>
+﻿@model test3.Models.ManageViewModels.ManageIndexViewModel
 
-@{
+    @{
     ViewData["Title"] = "Index";
-}
+    }
 
 
-<h2>Index</h2>
-    
-<h3>Twoje dane: </h3>
-Tutaj będą dane użytkownika.
-    
+    <h2>Index</h2>
+    <br />
 
-<h3>Twoje rezerwacje: </h3>
-Tutaj będą rezerwacje.
+    <div class="form-horizontal">
+        <h4>
+            Twoje dane: &nbsp;&nbsp;&nbsp;&nbsp;
+            <a style="font-size: 14px" asp-action="EditUser">Edytuj dane</a>
+        </h4>
+        <hr />
+        <table style="width: 50%;">
+            <tr>
+                <td><Label>Imie</Label></td>
+                <td>@Html.DisplayFor(x => Model.User.Name)</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            <tr>
+                <td><Label>Nazwisko</Label></td>
+                <td>@Html.DisplayFor(x => Model.User.Surname)</td>
+            <tr>
+                <td><Label>Data urodzenia</Label></td>
+                <td>@Html.DisplayFor(x => Model.User.DateOfBirth)</td>
+            <tr>
+                <td><Label>E-mail</Label></td>
+                <td>@Html.DisplayFor(x => Model.User.Email)</td>
+            <tr>
+                <td><Label>Telefon</Label></td>
+                <td>@Html.DisplayFor(x => Model.User.PhoneNumber)</td>
+        </table>
 
-<h3>Twoje Apartamenty: </h3>
-<table class="table">
-    <thead>
-        <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Adress)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Location)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PriceBasic)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.RoomSize)
-                </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Owner)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Adress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PriceBasic)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoomSize)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Owner.UserId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |
-                <a asp-controller="Apartments" asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
-                <a asp-controller="Apartments" asp-action="Delete" asp-route-id="@item.ApartmentId">Delete</a>
-            </td>
-        </tr>
+        <br />
+        <br />
+        <h3>Twoje rezerwacje: </h3>
+    Tutaj będą rezerwacje.
+    <div class="form-horizontal"/>
 
-}
-    </tbody>
-</table>
+        <br />
+        <br />
+        <h3>Twoje Apartamenty: </h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Pełny adres
+                    </th>
+                    <th>
+                        Opis
+                    </th>
+                    <th>
+                        Lokalizacja
+                    </th>
+                    <th>
+                        Cena bazowa
+                    </th>
+                    <th>
+                        Osób w pokoju
+                    </th>
+                    <th>
+                        Dodatkowe Opcje
+                    </th>
+                    <th>
+                        Rezerwacje
+                    </th>
+                    <th />
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Apartments) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Adress)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Location)
+                        </td>
+                        <td style="text-align: right">
+                            @Html.DisplayFor(modelItem => item.PriceBasic)
+                            <Text> zł</Text>
+                        </td>
+                        <td style="text-align: right">
+                            @Html.DisplayFor(modelItem => item.RoomSize)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.Owner.UserId)*@
+                            @if (item.ApartOption.Count() > 0)
+                        {
+                                @foreach (var option in item.ApartOption)
+                             {
+                                    @Html.DisplayFor(modelItem => option.Option.Name)
+                                    <br />
+                             }
+                        }
+                        else
+                        {
+                                <Text>brak dodatkowych opcji</Text>
+                        }
+                        </td>
+                        <td />
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.ApartmentId">Edit</a> |
+                            <a asp-controller="Apartments" asp-action="Details" asp-route-id="@item.ApartmentId">Details</a> |
+                            <a asp-controller="Apartments" asp-action="Delete" asp-route-id="@item.ApartmentId">Delete</a>
+                        </td>
+                    </tr>
 
-            <p>
-                <a asp-action="Create">Dodaj Apartament</a>
-            </p>
+    }
+            </tbody>
+        </table>
+
+        <p>
+            <a asp-action="Create">Dodaj Apartament</a>
+        </p>
