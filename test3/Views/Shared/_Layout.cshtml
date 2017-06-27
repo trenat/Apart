@@ -19,28 +19,38 @@
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Wynajem apartamentów</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Strona główna</a></li>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Wynajem apartamentów</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a asp-area="" asp-controller="Home" asp-action="Index">Strona główna</a></li>
                 @*    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>*@
                 @*    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>*@
-                </ul>
-                @await Html.PartialAsync("_LoginPartial")
-            </div>
+            </ul>
+            @await Html.PartialAsync("_LoginPartial")
         </div>
-    </nav>
-    <div class="container body-content">
+    </div>
+</nav>
+    
+<style type="text/css">
+    #footer {
+        position : absolute;
+        bottom : 0;
+        height : 00px;
+        margin-top : 0px;
+    }
+</style>
+
+<div class="container body-content">
         @RenderBody()
         <hr />
         <footer>

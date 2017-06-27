@@ -69,7 +69,7 @@ namespace test3
                 // options.Lockout.MaxFailedAccessAttempts = 10;
 
                 // Cookie settings
-                options.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromSeconds(300);
+                options.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromSeconds(3000);
                 options.Cookies.ApplicationCookie.LoginPath = "/Account/Login";
                 options.Cookies.ApplicationCookie.LogoutPath = "/Account/Logout";
 

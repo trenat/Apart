@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using test3.Data;
+using test3.Models.ReservationViewModel;
 
 namespace test3.Controllers
 {
@@ -27,6 +28,50 @@ namespace test3.Controllers
                 .Include(r => r.Rate);
             return View(await eadiApartDbContext.ToListAsync());
         }
+
+        [HttpPost]
+        public  IActionResult View2(VIewViewModel model)
+        {
+            
+            return View(model);
+        }
+
+        public  Task<IActionResult> View2()
+        {
+            VIewViewModel model = new VIewViewModel();
+            model.Apartments = _context.Apartment;
+            return View(model);
+        }
+        public IActionResult Search()
+        {
+            var Options = _context.Option.Select(x => x).ToList();
+            var CheckableOptions = Options.Select(x => new IsOption(x)).ToList();
+            return View(new SearchViewModel()
+            {
+                Apartments = _context.Apartment.ToList(),
+                Options = CheckableOptions
+            });
+        }
+
+        [HttpPost]
+        public IActionResult Search(SearchViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var Options = _context.Option.Select(x => x).ToList();
+                var CheckableOptions = Options.Select(x => new IsOption(x));
+                return View(new SearchViewModel()
+                {
+                    Options = CheckableOptions.ToList()
+                });
+            }
+            else
+            {
+
+                return View(new SearchViewModel());
+            }
+        }
+
 
         // GET: Reservations/Details/5
         public async Task<IActionResult> Details(int? id)

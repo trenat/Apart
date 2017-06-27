@@ -74,9 +74,11 @@ namespace test3.Controllers
         {
             ViewData["OwnerId"] = new SelectList(_context.User, "UserId", "UserId");
             //ViewData["Options"] = _context.Option.Select(x => x).ToList();
-            var model = new test3.Models.ManageViewModels.CreateApartmentViewModel();
-            model.Options = _context.Option.Select(x => new Opt() { Name = x.Name, isChecked = false }).ToList();
-            model.Apartment = new Apartment();
+            var model = new test3.Models.ManageViewModels.CreateApartmentViewModel()
+            {
+                Options = _context.Option.Select(x => new Opt() { Name = x.Name, isChecked = false }).ToList(),
+                Apartment = new Apartment()
+            };
             return View(model);
         }
 

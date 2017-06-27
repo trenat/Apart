@@ -41,7 +41,87 @@
         <br />
         <br />
         <h3>Twoje rezerwacje: </h3>
-    Tutaj będą rezerwacje.
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                Lokalizacja
+            </th>
+            <th>
+                Cema za dzień
+            </th>
+            <th>
+                Liczba pokoi
+            </th>
+            <th>
+                Rezerwacja od
+            </th>
+            <th>
+                Rezerwacja do
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                @*szczególy*@
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Reservations)
+        {
+            <tr>
+                <th>
+                    Lokalizacja
+                </th>
+                <th>
+                    Cema za dzień
+                </th>
+                <th>
+                    Liczba pokoi
+                </th>
+                <th>
+                    Rezerwacja od
+                </th>
+                <th>
+                    Rezerwacja do
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                   szczegóły
+                </th>
+            </tr>
+           
+        }
+        <tr>
+            <th>
+                -
+            </th>
+            <th>
+               -
+            </th>
+            <th>
+              -
+            </th>
+            <th>
+               -
+            </th>
+            <th>
+                -
+            </th>
+            <th>
+                -
+            </th>
+            <th>
+                
+                <a asp-controller="Reservations" asp-action="Search"> Dodaj rezerwację</a> 
+            </th>
+        </tr>
+        </tbody>
+    </table>
+        @*@foreach()*@
     <div class="form-horizontal"/>
 
         <br />

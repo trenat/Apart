@@ -1,0 +1,131 @@
+
+@{
+    ViewData["Title"] = "View2";
+}
+
+<h2>View</h2>
+
+
+<form asp-action="View">
+
+    <div id="parent">
+
+        <div class="form-horizontal" style="width: 70%; text-align: left;" id="first">
+            <h4>Apartamenty</h4>
+            <hr />
+
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Lokalizacja
+                        </th>
+                        <th>
+                            Pe³ny adres
+                        </th>
+
+                        <th>
+                            Opis
+                        </th>
+                        <th>
+                            Ocena
+                        </th>
+                        <th>
+                            Cena za dzieñ
+                        </th>
+                        <th>
+                            Liczba pokoi
+                        </th>
+                        <th>
+                            @*szczególy*@
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @for (int i = 0; i < Model.Apartments.Count(); i++)
+                    {
+
+                        @Html.HiddenFor(x => Model.Apartments[i])
+                        @*@Html.HiddenFor(x => x.Apartments[i].ApartmentId)
+                            @Html.HiddenFor(x => x.Apartments[i].Adress)
+                            @Html.HiddenFor(x => x.Apartments[i].Description)
+                            @Html.HiddenFor(x => x.Apartments[i].Location)
+                            @Html.HiddenFor(x => x.Apartments[i].OwnerId)
+                            @Html.HiddenFor(x => x.Apartments[i].PriceBasic)
+                            @Html.HiddenFor(x => Model.Apartments[i].ApartmentId)
+                            @Html.HiddenFor(x => Model.Apartments[i].Adress)
+                            @Html.HiddenFor(x => Model.Apartments[i].Description)
+                            @Html.HiddenFor(x => Model.Apartments[i].Location)
+                            @Html.HiddenFor(x => Model.Apartments[i].OwnerId)
+                            @Html.HiddenFor(x => Model.Apartments[i].PriceBasic)*@
+
+                        <tr>
+                            <th>
+                                Lokalizacja
+                                @Html.DisplayFor(x => x.Apartments[i].Location)
+                            </th>
+                            <th>
+                                Pe³ny adres
+                                @Html.DisplayFor(x => x.Apartments[i].Adress)
+                            </th>
+
+
+                            <th>
+                                @*  @Html.DisplayFor(x => x.Apartments[i].RoomSize)*@
+                                Opis
+
+                                @Html.DisplayFor(x => x.Apartments[i].Description)
+                            </th>
+                            <th>
+                                Ocena
+                                Reservations.Avarge()
+                                @Html.DisplayFor(x => x.Apartments[i].RoomSize)
+
+                            </th>
+                            <th>
+                                Cena za dzieñ
+                                @Html.DisplayFor(x => x.Apartments[i].PriceBasic)
+
+                            </th>
+                            <th>
+                                Liczba pokoi
+                                @Html.DisplayFor(x => x.Apartments[i].RoomSize)
+
+                            </th>
+                            <th>
+                                <a asp-controller="Apartments" asp-action="Details" asp-route-id="@i"></a>
+                            </th>
+                            @Html.HiddenFor(x => x.Apartments[i].ApartmentId)
+                            @Html.HiddenFor(x => x.Apartments[i].Adress)
+                            @Html.HiddenFor(x => x.Apartments[i].Description)
+                            @Html.HiddenFor(x => x.Apartments[i].Location)
+                            @Html.HiddenFor(x => x.Apartments[i].OwnerId)
+                            @Html.HiddenFor(x => x.Apartments[i].PriceBasic)
+                            @Html.HiddenFor(x => Model.Apartments[i].ApartmentId)
+                            @Html.HiddenFor(x => Model.Apartments[i].Adress)
+                            @Html.HiddenFor(x => Model.Apartments[i].Description)
+                            @Html.HiddenFor(x => Model.Apartments[i].Location)
+                            @Html.HiddenFor(x => Model.Apartments[i].OwnerId)
+                            @Html.HiddenFor(x => Model.Apartments[i].PriceBasic)
+
+                            @*int ApartmentId { get; set; }
+                                //  public string Adress { get; set; }
+                                //  public string Description { get; set; }
+                                // public string Location { get; set; }
+                                public int OwnerId { get; set; }
+                                //public decimal PriceBasic { get; set; }*@
+                        </tr>
+                    }
+                </tbody>
+            </table>   <div class="form-group">
+                <div class="col-md-offset-8 col-md-10">
+                    <input type="submit" value="Szukaj" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
