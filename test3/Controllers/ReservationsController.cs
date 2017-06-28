@@ -5,18 +5,39 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGeneration;
 using test3.Data;
 using test3.Models.ReservationViewModel;
 
 namespace test3.Controllers
 {
+    public static class InRangeExtensions
+    {
+        public static bool InRange(this DateTime? dateToCheck, DateTime? startDate, DateTime? endDate)
+        {
+            return dateToCheck >= startDate && dateToCheck <= endDate;
+        }
+        public static bool InRange(this int? valueToCheck, int? minValue, int? maxValue)
+        {
+            return valueToCheck >= minValue && valueToCheck <= maxValue;
+        }
+        public static bool InRange(this decimal valueToCheck, decimal minValue, decimal maxValue)
+        {
+            return valueToCheck >= minValue && valueToCheck <= maxValue;
+        }
+        public static bool InRange(this decimal? valueToCheck, decimal? minValue, decimal? maxValue)
+        {
+            return valueToCheck >= minValue && valueToCheck <= maxValue;
+        }
+    }
+
     public class ReservationsController : Controller
     {
         private readonly eadiApartDbContext _context;
 
         public ReservationsController(eadiApartDbContext context)
         {
-            _context = context;    
+            _context = context;
         }
 
         // GET: Reservations
@@ -29,46 +50,150 @@ namespace test3.Controllers
             return View(await eadiApartDbContext.ToListAsync());
         }
 
-        [HttpPost]
-        public  IActionResult View2(VIewViewModel model)
-        {
-            
-            return View(model);
-        }
+        //[HttpPost]
+        //public IActionResult View2(SearchViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var Options = _context.Option.Select(x => x).ToList();
+        //        var CheckableOptions = Options.Select(x => new IsOption()
+        //        {
+        //            Name = x.Name,
+        //            IsSet = false
+        //        });
+        //        return View(new SearchViewModel()
+        //        {
+        //            Options = CheckableOptions.ToList()
+        //        });
+        //    }
+        //    else
+        //    {
 
-        public  Task<IActionResult> View2()
-        {
-            VIewViewModel model = new VIewViewModel();
-            model.Apartments = _context.Apartment;
-            return View(model);
-        }
+        //        return View(new SearchViewModel());
+        //    }
+        //}
+
+        //public IActionResult View2()
+        //{
+        //    var Options = _context.Option.Select(x => x).ToList();
+        //    var CheckableOptions = Options.Select(x => new IsOption()
+        //    {
+        //        Name = x.Name,
+        //        IsSet = false
+        //    }).ToList();
+        //    var model = new SearchViewModel()
+        //    {
+        //        Apartments = _context.Apartment.ToList(),
+        //        Options = CheckableOptions
+        //    };
+        //    return View(model);
+        //}
+
+
         public IActionResult Search()
         {
+
             var Options = _context.Option.Select(x => x).ToList();
-            var CheckableOptions = Options.Select(x => new IsOption(x)).ToList();
-            return View(new SearchViewModel()
+            var CheckableOptions = Options.Select(x => new IsOption()
+            {
+                Name = x.Name,
+                IsSet = false
+            }).ToList();
+            var model = new SearchViewModel()
             {
                 Apartments = _context.Apartment.ToList(),
                 Options = CheckableOptions
-            });
+            };
+            return View(model);
         }
+
+
 
         [HttpPost]
         public IActionResult Search(SearchViewModel model)
         {
+
+            Func<Apartment,bool> DateFilter = (Apartment ap) => true;
+            Func<Apartment,bool> PriceFilter = (Apartment ap) => true;
+            Func<Apartment, bool> RateFilter = (Apartment ap) => true;
+            Func<Apartment, bool> OptionsFilter = (Apartment ap) =>
+            {
+                if (model.Options.Where(x => x.IsSet)                
+                                 .All(x => ap.ApartOption.Any(op => op.Option.Name == x.Name)))  
+                    return true;
+                return false;
+            };
+            if (model.UseDate)
+            {
+                if (model.DateFrom.CompareTo(model.DateTo) > 0)
+                {
+                    if (model.Apartments != null)
+                        model.Apartments.Clear();
+                    return View(model);
+
+                }
+                DateFilter = (Apartment ap) =>
+                {
+                    if (ap.Reservation.Any(res => res.FromDate.InRange(model.DateFrom, model.DateTo) &&
+                                                  res.ToDate.InRange(model.DateFrom, model.DateTo)))     //If there is any conflict in dates
+                        return false;
+                    return true;
+                };
+            }
+            if (model.UsePrice) 
+            {
+                if (model.PriceMin < model.PriceMax)
+                {
+                    if (model.Apartments != null)
+                        model.Apartments.Clear();
+                    return View(model);
+
+                }
+                PriceFilter = (Apartment ap) =>
+                {
+                    if (ap.PriceBasic.InRange(model.PriceMin, model.PriceMax))
+                        return true;
+                    return false;
+                };
+            }
+            if (model.UseRate) 
+            {
+                if (model.RateMin < model.RateMax)
+                {
+                    if (model.Apartments != null)
+                        model.Apartments.Clear();
+                    return View(model);
+
+                }
+                RateFilter = (Apartment ap) =>
+                {
+                    decimal? avg = ap.Reservation.Average(x => x.Rate?.RateLevel);
+                    if (avg!=null && avg.InRange(model.RateMin, model.RateMax))
+                        return true;
+                    return false;
+                };
+            }
+            if(model.Apartments!=null)
+                model.Apartments.Clear();
+
+            model.Apartments = _context.Apartment
+                .Include(ap => ap.Reservation)
+                .ThenInclude(ap => ap.Rate)
+                .Where(PriceFilter)
+                .Where(RateFilter)
+                .Where(DateFilter)
+                .Where(OptionsFilter)
+                .ToList();
+
+            return View(model);
             if (ModelState.IsValid)
             {
-                var Options = _context.Option.Select(x => x).ToList();
-                var CheckableOptions = Options.Select(x => new IsOption(x));
-                return View(new SearchViewModel()
-                {
-                    Options = CheckableOptions.ToList()
-                });
+                return View(model);
             }
             else
             {
 
-                return View(new SearchViewModel());
+                return View(model);
             }
         }
 

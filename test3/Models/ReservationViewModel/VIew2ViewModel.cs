@@ -9,5 +9,7 @@ namespace test3.Models.ReservationViewModel
     public class View2ViewModel
     {
         public IList<Apartment> Apartments { get; set; }
+
+        public IList<IsOption> Options { get; set; }
     }
 }

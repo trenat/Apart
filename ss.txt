@@ -1,0 +1,138 @@
+Folder PATH listing
+Volume serial number is 00000028 A654:77EF
+C:.
+³   .gitattributes
+³   .gitignore
+³   ss.txt
+³   test3.sln
+³   test3.sln.DotSettings.user
+³   Tree
+³   
+ÀÄÄÄtest3
+    ³   appsettings.json
+    ³   bower.json
+    ³   bundleconfig.json
+    ³   Program.cs
+    ³   ScaffoldingReadMe.txt
+    ³   Startup.cs
+    ³   test3.csproj
+    ³   test3.csproj.user
+    ³   
+    ÃÄÄÄControllers
+    ³       AccountController.cs
+    ³       AdminController.cs
+    ³       ApartImagesController.cs
+    ³       ApartmentsController.cs
+    ³       HomeController.cs
+    ³       ManageController.cs
+    ³       ReservationsController.cs
+    ³       UsersController.cs
+    ³       
+    ÃÄÄÄData
+    ³       ApartImage.cs
+    ³       Apartment.cs
+    ³       ApartOption.cs
+    ³       eadiApartDbContext.cs
+    ³       Option.cs
+    ³       Rate.cs
+    ³       Reservation.cs
+    ³       User.cs
+    ³       
+    ÃÄÄÄMigrations
+    ³       20170411181635_eee.cs
+    ³       20170411181635_eee.Designer.cs
+    ³       eadiApartDbContextModelSnapshot.cs
+    ³       
+    ÃÄÄÄModels
+    ³   ³   ApplicationUser.cs
+    ³   ³   Role.cs
+    ³   ³   
+    ³   ÃÄÄÄAccountViewModels
+    ³   ³       LoginViewModel.cs
+    ³   ³       RegisterViewModel.cs
+    ³   ³       
+    ³   ÃÄÄÄAdminViewModels
+    ³   ³       PasswordResetModel.cs
+    ³   ³       
+    ³   ÃÄÄÄHomeViewModels
+    ³   ³       HomeViewModel.cs
+    ³   ³       
+    ³   ÃÄÄÄManageViewModels
+    ³   ³       CreateApartmentViewModel.cs
+    ³   ³       IndexViewModel.cs
+    ³   ³       
+    ³   ÀÄÄÄReservationViewModel
+    ³           SearchViewModel.cs
+    ³           VIew2ViewModel.cs
+    ³           
+    ÃÄÄÄProperties
+    ³       launchSettings.json
+    ³       
+    ÃÄÄÄServices
+    ³       ApartUserStore.cs
+    ³       Messeges.cs
+    ³       MyRoleStore.cs
+    ³       MySignInManager.cs
+    ³       MyUserManager.cs
+    ³       
+    ÃÄÄÄViews
+    ³   ³   _ViewImports.cshtml
+    ³   ³   _ViewStart.cshtml
+    ³   ³   
+    ³   ÃÄÄÄAccount
+    ³   ³       Login.cshtml
+    ³   ³       Register.cshtml
+    ³   ³       
+    ³   ÃÄÄÄAdmin
+    ³   ³       Create.cshtml
+    ³   ³       Delete.cshtml
+    ³   ³       Details.cshtml
+    ³   ³       Edit.cshtml
+    ³   ³       Index.cshtml
+    ³   ³       PasswordReset.cshtml
+    ³   ³       
+    ³   ÃÄÄÄApartImages
+    ³   ³       Create.cshtml
+    ³   ³       Details.cshtml
+    ³   ³       Edit.cshtml
+    ³   ³       Index.cshtml
+    ³   ³       
+    ³   ÃÄÄÄApartments
+    ³   ³       Create.cshtml
+    ³   ³       Delete.cshtml
+    ³   ³       Details.cshtml
+    ³   ³       Edit.cshtml
+    ³   ³       Index.cshtml
+    ³   ³       
+    ³   ÃÄÄÄHome
+    ³   ³       Index.cshtml
+    ³   ³       
+    ³   ÃÄÄÄManage
+    ³   ³       Create.cshtml
+    ³   ³       Index.cshtml
+    ³   ³       
+    ³   ÃÄÄÄReservations
+    ³   ³       Create.cshtml
+    ³   ³       Delete.cshtml
+    ³   ³       Details.cshtml
+    ³   ³       Edit.cshtml
+    ³   ³       Index.cshtml
+    ³   ³       Search.cshtml
+    ³   ³       View2.cshtml
+    ³   ³       
+    ³   ÃÄÄÄShared
+    ³   ³       AccessDenied.cshtml
+    ³   ³       Error.cshtml
+    ³   ³       Layout.cshtml
+    ³   ³       _Layout.cshtml
+    ³   ³       _LoginPartial.cshtml
+    ³   ³       _ValidationScriptsPartial.cshtml
+    ³   ³       
+    ³   ÀÄÄÄUsers
+    ³           Create.cshtml
+    ³           Delete.cshtml
+    ³           Details.cshtml
+    ³           Edit.cshtml
+    ³           Index.cshtml
+    ³           
+                  
