@@ -1,3 +1,4 @@
+﻿@using System
 @model test3.Data.Reservation
 
 @{
@@ -11,75 +12,29 @@
         <h4>Reservation</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="ApartmentId" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <select asp-for="ApartmentId" class ="form-control" asp-items="ViewBag.ApartmentId"></select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ClientId" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <select asp-for="ClientId" class ="form-control" asp-items="ViewBag.ClientId"></select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Comment" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Comment" class="form-control" />
-                <span asp-validation-for="Comment" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
+       <div class="form-group">
             <label asp-for="FromDate" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="FromDate" class="form-control" />
+                <input asp-for="FromDate"  type="date"/>
                 <span asp-validation-for="FromDate" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="OwnerReply" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="OwnerReply" class="form-control" />
-                <span asp-validation-for="OwnerReply" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="RateId" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <select asp-for="RateId" class ="form-control" asp-items="ViewBag.RateId"></select>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Status" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="ToDate" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="ToDate" class="form-control" />
+                <input asp-for="ToDate"  type="date" />
                 <span asp-validation-for="ToDate" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="TotalCost" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="TotalCost" class="form-control" />
-                <span asp-validation-for="TotalCost" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Potwierdź" class="btn btn-default" />
             </div>
         </div>
     </div>
 </form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Home" asp-action="Index">Wróć na stonę główną</a>
 </div>
 

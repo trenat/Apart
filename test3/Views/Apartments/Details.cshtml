@@ -1,4 +1,4 @@
-@model test3.Data.Apartment
+﻿@model test3.Data.Apartment
 
 @{
     ViewData["Title"] = "Details";
@@ -52,3 +52,114 @@
     <a asp-action="Edit" asp-route-id="@Model.ApartmentId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+
+<section id="conversation" data-role="main" data-tracking-area="main">
+
+    <br />
+    <br />
+    <br />
+    <Label>Komentarze:</Label>
+    <br />
+    <div id="posts" style="border: 1px solid #AAA; width: 100%; height: 80%;">
+
+        @for (int i = 0; i < Model.Reservation.Count; i++)
+        {
+            if (Model.Reservation[i].Comment != null)
+            {
+            <div style="border: 1px solid #6495ed; margin-top: 1.5%; margin-left: 2%; margin-right: 0.5%; margin-bottom: 0.5%">
+                <p style="margin-left: 3%; margin-top: 1%">
+                    <label>Użytkownik:</label> @Html.DisplayFor(x => Model.Reservation[i].Client.Name)
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Label>Pobyt:</Label> &nbsp; @Html.DisplayFor(x => Model.Reservation[i].DateFrom) - @Html.DisplayFor(x => Model.Reservation[i].DateTo)
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Label>Ocena:</Label> @Html.DisplayFor(x => Model.Reservation[i].Rate.RateLevel)
+                    <hr style="margin-top: -5px">
+                </p>
+            </div>
+            <div style="margin-left: 6%" dir="auto">
+                <p>
+                    @Html.DisplayFor(x => Model.Reservation[i].Comment)
+                </p>
+                if(Model.Reservaton[i].OwnerReply!=null)
+                {
+                <div id="answer" style="margin-left: 5%">
+                    <p style="margin-left: 3%; font-weight: bold; margin-top: 1%">
+                        <Label>Odpowiedź właściciela:</Label>
+                        <hr style="margin-top: -5px">
+                    </p>
+                    <div>
+                        <p>
+                            @Html.DisplayFor(x => Model.Reservation[i].OnwerReply)
+                        </p>
+                    </div>
+                </div>
+                }
+            </div>
+            }
+        }
+        <div id="131" style="border: 1px solid #6495ed; margin-top: 1.5%; margin-left: 2%; margin-right: 0.5%; margin-bottom: 0.5%">
+            <p style="margin-left: 3%; margin-top: 1%">
+                Użytkownik: Dawiddo14
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Pobyt: &nbsp; 17.08.2017 - 22.08.2017
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Ocena: 5
+                <hr style="margin-top: -5px">
+            </p>
+
+            <div style="margin-left: 6%" class="post-message " data-role="message" dir="auto">
+                <p>
+                    Dzięki za ciekawy artykuł. <br>Od razu zabrałem się za sprawdzanie w swoim programie gdzie mogę użyć właściwego porównywania stringów. <br>I zacząłem na wariata dodawać zaproponowaną przez ciebie składnie "s1.Equals("Aa", StringComparison.OrdinalIgnoreCase)". Problem w tym że jeśli s1==null to będziemy mieli wyjątek. Dlatego jeśli dopuszcza się taką możliwość bezpieczniej porównywać tak: "String.Equals(s1, "Aa", StringComparison.OrdinalIgnoreCase)"
+                </p>
+                <div id="answer" style="margin-left: 5%">
+                    <p style="margin-left: 3%; font-weight: bold; margin-top: 1%">
+                        Odpowiedź właściciela:
+                        <hr style="margin-top: -5px">
+                    </p>
+                    <div>
+                        <p>
+                            Dzięki za ciekawy artykuł. <br>Od razu zabrałem się za sprawdzanie w swoim programie gdzie mogę użyć właściwego porównywania stringów. <br>I zacząłem na wariata dodawać zaproponowaną przez ciebie składnie "s1.Equals("Aa", StringComparison.OrdinalIgnoreCase)". Problem w tym że jeśli s1==null to będziemy mieli wyjątek. Dlatego jeśli dopuszcza się taką możliwość bezpieczniej porównywać tak: "String.Equals(s1, "Aa", StringComparison.OrdinalIgnoreCase)"
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div id="13321" style="border: 1px solid #6495ed; margin-top: 1.5%; margin-left: 2%; margin-right: 0.5%; margin-bottom: 0.5%">
+            <p style="margin-left: 3%; margin-top: 1%">
+                Użytkownik: Dawiddo14
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Pobyt: &nbsp; 17.08.2017 - 22.08.2017
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Ocena: 5
+                <hr style="margin-top: -5px">
+            </p>
+
+            <div style="margin-left: 6%" class="post-message " data-role="message" dir="auto">
+                <p>
+                    Dzięki za ciekawy artykuł. <br>Od razu zabrałem się za sprawdzanie w swoim programie gdzie mogę użyć właściwego porównywania stringów. <br>I zacząłem na wariata dodawać zaproponowaną przez ciebie składnie "s1.Equals("Aa", StringComparison.OrdinalIgnoreCase)". Problem w tym że jeśli s1==null to będziemy mieli wyjątek. Dlatego jeśli dopuszcza się taką możliwość bezpieczniej porównywać tak: "String.Equals(s1, "Aa", StringComparison.OrdinalIgnoreCase)"
+                </p>
+                <div id="answer" style="margin-left: 5%">
+                    <p style="margin-left: 3%; font-weight: bold; margin-top: 1%">
+                        Odpowiedź właściciela:
+                        <hr style="margin-top: -5px">
+                    </p>
+                    <div>
+                        <p>
+                            Dzięki za ciekawy artykuł. <br>Od razu zabrałem się za sprawdzanie w swoim programie gdzie mogę użyć właściwego porównywania stringów. <br>I zacząłem na wariata dodawać zaproponowaną przez ciebie składnie "s1.Equals("Aa", StringComparison.OrdinalIgnoreCase)". Problem w tym że jeśli s1==null to będziemy mieli wyjątek. Dlatego jeśli dopuszcza się taką możliwość bezpieczniej porównywać tak: "String.Equals(s1, "Aa", StringComparison.OrdinalIgnoreCase)"
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div>
+
+
+        </div>
+
+
+    </div>
+</section>

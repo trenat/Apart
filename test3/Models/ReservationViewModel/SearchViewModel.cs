@@ -26,6 +26,14 @@ namespace test3.Models.ReservationViewModel
         
     }
 
+    public class CreateViewModel
+    {
+        public DateTime DateFrom { set; get; }
+        public DateTime DateTo { set; get; }
+        public int ApartId { set; get; }
+
+    }
+
     public class IsOption
     {
         public bool IsSet { get; set; }

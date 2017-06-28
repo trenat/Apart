@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGeneration;
 using test3.Data;
+using test3.Models.ManageViewModels;
 using test3.Models.ReservationViewModel;
 
 namespace test3.Controllers
@@ -113,91 +115,94 @@ namespace test3.Controllers
         public IActionResult Search(SearchViewModel model)
         {
 
-            Func<Apartment,bool> DateFilter = (Apartment ap) => true;
-            Func<Apartment,bool> PriceFilter = (Apartment ap) => true;
-            Func<Apartment, bool> RateFilter = (Apartment ap) => true;
-            Func<Apartment, bool> OptionsFilter = (Apartment ap) =>
-            {
-                if (model.Options.Where(x => x.IsSet)                
-                                 .All(x => ap.ApartOption.Any(op => op.Option.Name == x.Name)))  
-                    return true;
-                return false;
-            };
-            if (model.UseDate)
-            {
-                if (model.DateFrom.CompareTo(model.DateTo) > 0)
-                {
-                    if (model.Apartments != null)
-                        model.Apartments.Clear();
-                    return View(model);
-
-                }
-                DateFilter = (Apartment ap) =>
-                {
-                    if (ap.Reservation.Any(res => res.FromDate.InRange(model.DateFrom, model.DateTo) &&
-                                                  res.ToDate.InRange(model.DateFrom, model.DateTo)))     //If there is any conflict in dates
-                        return false;
-                    return true;
-                };
-            }
-            if (model.UsePrice) 
-            {
-                if (model.PriceMin < model.PriceMax)
-                {
-                    if (model.Apartments != null)
-                        model.Apartments.Clear();
-                    return View(model);
-
-                }
-                PriceFilter = (Apartment ap) =>
-                {
-                    if (ap.PriceBasic.InRange(model.PriceMin, model.PriceMax))
-                        return true;
-                    return false;
-                };
-            }
-            if (model.UseRate) 
-            {
-                if (model.RateMin < model.RateMax)
-                {
-                    if (model.Apartments != null)
-                        model.Apartments.Clear();
-                    return View(model);
-
-                }
-                RateFilter = (Apartment ap) =>
-                {
-                    decimal? avg = ap.Reservation.Average(x => x.Rate?.RateLevel);
-                    if (avg!=null && avg.InRange(model.RateMin, model.RateMax))
-                        return true;
-                    return false;
-                };
-            }
-            if(model.Apartments!=null)
-                model.Apartments.Clear();
-
-            model.Apartments = _context.Apartment
-                .Include(ap => ap.Reservation)
-                .ThenInclude(ap => ap.Rate)
-                .Where(PriceFilter)
-                .Where(RateFilter)
-                .Where(DateFilter)
-                .Where(OptionsFilter)
-                .ToList();
-
-            return View(model);
             if (ModelState.IsValid)
             {
-                return View(model);
-            }
-            else
-            {
+                Func<Apartment, bool> DateFilter = (Apartment ap) => true;
+                Func<Apartment, bool> PriceFilter = (Apartment ap) => true;
+                Func<Apartment, bool> RateFilter = (Apartment ap) => true;
+                Func<Apartment, bool> OptionsFilter = (Apartment ap) =>
+                {
+                    if (model.Options.Where(x => x.IsSet)
+                                     .All(x => ap.ApartOption.Any(op => op.Option.Name == x.Name)))
+                        return true;
+                    return false;
+                };
+                if (model.UseDate)
+                {
+                    if (model.DateFrom.CompareTo(model.DateTo) > 0)
+                    {
+                        if (model.Apartments != null)
+                            model.Apartments.Clear();
+                        return View(model);
+
+                    }
+                    DateFilter = (Apartment ap) =>
+                    {
+                        if (ap.Reservation.Any(res => res.FromDate.InRange(model.DateFrom, model.DateTo) &&
+                                                      res.ToDate.InRange(model.DateFrom, model.DateTo)))     //If there is any conflict in dates
+                        return false;
+                        return true;
+                    };
+                }
+                if (model.UsePrice)
+                {
+                    if (model.PriceMin < model.PriceMax)
+                    {
+                        if (model.Apartments != null)
+                            model.Apartments.Clear();
+                        return View(model);
+
+                    }
+                    PriceFilter = (Apartment ap) =>
+                    {
+                        if (ap.PriceBasic.InRange(model.PriceMin, model.PriceMax))
+                            return true;
+                        return false;
+                    };
+                }
+                if (model.UseRate)
+                {
+                    if (model.RateMin < model.RateMax)
+                    {
+                        if (model.Apartments != null)
+                            model.Apartments.Clear();
+                        return View(model);
+
+                    }
+                    RateFilter = (Apartment ap) =>
+                    {
+                        decimal? avg = ap.Reservation.Average(x => x.Rate?.RateLevel);
+                        if (avg != null && avg.InRange(model.RateMin, model.RateMax))
+                            return true;
+                        return false;
+                    };
+                }
+                if (model.Apartments != null)
+                    model.Apartments.Clear();
+                
+                model.Apartments = _context.Apartment
+                    .Include(ap => ap.Reservation)
+                    .ThenInclude(ap => ap.Rate)
+                    .Where(PriceFilter)
+                    .Where(RateFilter)
+                    .Where(DateFilter)
+                    .Where(OptionsFilter)
+                    .ToList();
 
                 return View(model);
             }
+            return View(model);
         }
 
+        public async Task<IActionResult> Reserve(int? id)
+        {
+            if (id == null)
+                return NotFound();
 
+            //var model = new ReserveViewModel();
+            
+            return View();
+        }
         // GET: Reservations/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -220,32 +225,47 @@ namespace test3.Controllers
         }
 
         // GET: Reservations/Create
-        public IActionResult Create()
+        [Authorize]
+        public IActionResult Create(int? id)
         {
-            ViewData["ApartmentId"] = new SelectList(_context.Apartment, "ApartmentId", "Adress");
-            ViewData["ClientId"] = new SelectList(_context.User, "UserId", "UserId");
-            ViewData["RateId"] = new SelectList(_context.Rate, "RateId", "RateId");
-            return View();
+            if (id == null)
+            {
+                NotFound();
+            }
+      
+            var model = new CreateViewModel();
+            model.ApartId = (int)id;
+            model.DateFrom = DateTime.Now;
+            model.DateTo = DateTime.Now;
+            return View(model);
         }
-
-        // POST: Reservations/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReservationId,ApartmentId,ClientId,Comment,FromDate,OwnerReply,RateId,Status,ToDate,TotalCost")] Reservation reservation)
+        [Authorize]
+        public async Task<IActionResult> Create(CreateViewModel model)
         {
-            if (ModelState.IsValid)
+            var apart = _context.Apartment
+                .Include(ap => ap.Reservation)
+                .FirstOrDefault(x => x.ApartmentId == model.ApartId);
+
+            if (apart.Reservation.Any(res => res.FromDate.InRange(model.DateFrom, model.DateTo) &&
+                                                       res.ToDate.InRange(model.DateFrom, model.DateTo)))
             {
-                _context.Add(reservation);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                ModelState.AddModelError(string.Empty, "Nie mo¿esz zarezerwowaæ");
+                return View(model);
             }
-            ViewData["ApartmentId"] = new SelectList(_context.Apartment, "ApartmentId", "Adress", reservation.ApartmentId);
-            ViewData["ClientId"] = new SelectList(_context.User, "UserId", "UserId", reservation.ClientId);
-            ViewData["RateId"] = new SelectList(_context.Rate, "RateId", "RateId", reservation.RateId);
-            return View(reservation);
+            ModelState.AddModelError(string.Empty, "mo¿esz zarezerwowaæ");
+            return View(model);
         }
+
+
+
+
+
+
+
+
 
         // GET: Reservations/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -266,9 +286,7 @@ namespace test3.Controllers
             return View(reservation);
         }
 
-        // POST: Reservations/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ReservationId,ApartmentId,ClientId,Comment,FromDate,OwnerReply,RateId,Status,ToDate,TotalCost")] Reservation reservation)

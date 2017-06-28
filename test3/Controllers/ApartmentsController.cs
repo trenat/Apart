@@ -35,17 +35,19 @@ namespace test3.Controllers
 
             var apartment = await _context.Apartment
                 .Include(a => a.Owner)
-                .SingleOrDefaultAsync(m => m.ApartmentId == id)
-                ;
+                .FirstOrDefaultAsync(m => m.ApartmentId == id);
             if (apartment == null)
             {
                 return NotFound();
             }
-
-            
+           
 
             return View(apartment);
         }
+
+
+
+
 
         // GET: Apartments/Create
         public IActionResult Create()
@@ -53,10 +55,8 @@ namespace test3.Controllers
             ViewData["OwnerId"] = new SelectList(_context.User, "UserId", "UserId");
             return View();
         }
+        
 
-        // POST: Apartments/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ApartmentId,Adress,Description,Location,OwnerId,PriceBasic,RoomSize")] Apartment apartment)
@@ -70,6 +70,9 @@ namespace test3.Controllers
             ViewData["OwnerId"] = new SelectList(_context.User, "UserId", "UserId", apartment.OwnerId);
             return View(apartment);
         }
+
+
+
 
         // GET: Apartments/Edit/5
         public async Task<IActionResult> Edit(int? id)

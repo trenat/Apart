@@ -62,13 +62,13 @@
                     <th>
                         Opis
                     </th>
-                    <th>
+                    <th style="width: 8%; text-align: left">
                         Ocena
                     </th>
-                    <th>
+                    <th style="width: 18%; text-align: left">
                         Cena za dzień
                     </th>
-                    <th>
+                    <th style="text-align: left">
                         Liczba pokoi
                     </th>
                     <th>
@@ -112,7 +112,8 @@
                             @Html.DisplayFor(x => x.Apartments[i].RoomSize)
                         </th>
                         <th>
-                            <a asp-controller="Apartments" asp-action="Details" asp-route-id="@i"></a>
+                            <a asp-controller="Apartments" asp-action="Details" asp-route-id="@Model.Apartments[i].ApartmentId">Szczegóły</a> <br />
+                            <a asp-action="Create" asp-route-id="@Model.Apartments[i].ApartmentId">Rezerwuj</a> 
                         </th>
                         @Html.HiddenFor(x => x.Apartments[i].ApartmentId)
                         @Html.HiddenFor(x => x.Apartments[i].Adress)
