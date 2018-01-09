@@ -71,7 +71,7 @@
                 <p style="margin-left: 3%; margin-top: 1%">
                     <label>Użytkownik:</label> @Html.DisplayFor(x => Model.Reservation[i].Client.Name)
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <Label>Pobyt:</Label> &nbsp; @Html.DisplayFor(x => Model.Reservation[i].DateFrom) - @Html.DisplayFor(x => Model.Reservation[i].DateTo)
+                    <Label>Pobyt:</Label> &nbsp; @Html.DisplayFor(x => Model.Reservation[i].FromDate) - @Html.DisplayFor(x => Model.Reservation[i].ToDate)
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <Label>Ocena:</Label> @Html.DisplayFor(x => Model.Reservation[i].Rate.RateLevel)
                     <hr style="margin-top: -5px">
@@ -90,7 +90,7 @@
                     </p>
                     <div>
                         <p>
-                            @Html.DisplayFor(x => Model.Reservation[i].OnwerReply)
+                            @Html.DisplayFor(x => Model.Reservation[i].OwnerReply)
                         </p>
                     </div>
                 </div>

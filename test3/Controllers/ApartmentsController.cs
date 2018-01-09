@@ -35,6 +35,7 @@ namespace test3.Controllers
 
             var apartment = await _context.Apartment
                 .Include(a => a.Owner)
+                .Include(r => r.Reservation)
                 .FirstOrDefaultAsync(m => m.ApartmentId == id);
             if (apartment == null)
             {

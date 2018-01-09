@@ -38,104 +38,106 @@
 </style>
 
 <form asp-action="Search">
-    
+
     <span style="font-size: 16px; color: red">
         @Html.ValidationSummary()
-        
+
     </span>
     <div id="parent">
 
         <div class="form-horizontal" style="width: 70%; text-align: left;" id="first">
             <h4>Apartamenty</h4>
-            <hr/>
+            <hr />
 
 
             <table class="table">
                 <thead>
-                <tr>
-                    <th>
-                        Lokalizacja
-                    </th>
-                    <th>
-                        Pełny adres
-                    </th>
-                    <th>
-                        Opis
-                    </th>
-                    <th style="width: 8%; text-align: left">
-                        Ocena
-                    </th>
-                    <th style="width: 18%; text-align: left">
-                        Cena za dzień
-                    </th>
-                    <th style="text-align: left">
-                        Liczba pokoi
-                    </th>
-                    <th>
-                        @*szczególy*@
-                    </th>
+                    <tr>
+                        <th>
+                            Lokalizacja
+                        </th>
+                        <th>
+                            Pełny adres
+                        </th>
+                        <th>
+                            Opis
+                        </th>
+                        <th style="width: 8%; text-align: left">
+                            Ocena
+                        </th>
+                        <th style="width: 18%; text-align: left">
+                            Cena za dzień
+                        </th>
+                        <th style="text-align: left">
+                            Liczba pokoi
+                        </th>
+                        <th>
+                            @*szczególy*@
+                        </th>
 
-                </tr>
+                    </tr>
                 </thead>
                 <tbody style="font-weight: 100">
-
-                @for (int i = 0; i < Model.Apartments.Count(); i++)
+                    @if (Model.Apartments != null)
+                    {
+                        @for (int i = 0; i < Model.Apartments.Count(); i++)
                 {
-                    @Html.HiddenFor(x => Model.Apartments[i])
+                            @Html.HiddenFor(x => Model.Apartments[i])
 
-                    <tr >
-                        <th>
-                            @Html.DisplayFor(x => x.Apartments[i].Location)
-                        </th>
-                        <th>
-                            @Html.DisplayFor(x => x.Apartments[i].Adress)
-                        </th>
-                        <th>
-                            @Html.DisplayFor(x => x.Apartments[i].Description)
-                            asdasd
-                        </th>
-                        <th>
-                            @{
-                                decimal? avg = Model.Apartments[i].Reservation.Average(res => res.Rate?.RateLevel);
-                                if (avg == null)
-                                {
-                                    avg = 0;
-                                }
-                            }
+                            <tr>
+                                <th>
+                                    @Html.DisplayFor(x => x.Apartments[i].Location)
+                                </th>
+                                <th>
+                                    @Html.DisplayFor(x => x.Apartments[i].Adress)
+                                </th>
+                                <th>
+                                    @Html.DisplayFor(x => x.Apartments[i].Description)
+                                    asdasd
+                                </th>
+                                <th>
+                                    @{
+                                        decimal? avg = Model.Apartments[i].Reservation.Average(res => res.Rate?.RateLevel);
+                                        if (avg == null)
+                                        {
+                                            avg = 0;
+                                        }
+                                    }
 
-                            @Html.DisplayFor(x => avg)
-                        </th>
-                        <th>
-                            @Html.DisplayFor(x => x.Apartments[i].PriceBasic)
-                        </th>
-                        <th>
-                            @Html.DisplayFor(x => x.Apartments[i].RoomSize)
-                        </th>
-                        <th>
-                            <a asp-controller="Apartments" asp-action="Details" asp-route-id="@Model.Apartments[i].ApartmentId">Szczegóły</a> <br />
-                            <a asp-action="Create" asp-route-id="@Model.Apartments[i].ApartmentId">Rezerwuj</a> 
-                        </th>
-                        @Html.HiddenFor(x => x.Apartments[i].ApartmentId)
-                        @Html.HiddenFor(x => x.Apartments[i].Adress)
-                        @Html.HiddenFor(x => x.Apartments[i].Description)
-                        @Html.HiddenFor(x => x.Apartments[i].Location)
-                        @Html.HiddenFor(x => x.Apartments[i].OwnerId)
-                        @Html.HiddenFor(x => x.Apartments[i].PriceBasic)
-                        @Html.HiddenFor(x => Model.Apartments[i].ApartmentId)
-                        @Html.HiddenFor(x => Model.Apartments[i].Adress)
-                        @Html.HiddenFor(x => Model.Apartments[i].Description)
-                        @Html.HiddenFor(x => Model.Apartments[i].Location)
-                        @Html.HiddenFor(x => Model.Apartments[i].OwnerId)
-                        @Html.HiddenFor(x => Model.Apartments[i].PriceBasic)
-                    </tr>
-                }
+                                    @Html.DisplayFor(x => avg)
+                                </th>
+                                <th>
+                                    @Html.DisplayFor(x => x.Apartments[i].PriceBasic)
+                                </th>
+                                <th>
+                                    @Html.DisplayFor(x => x.Apartments[i].RoomSize)
+                                </th>
+                                <th>
+                                    <a asp-controller="Apartments" asp-action="Details" asp-route-id="@Model.Apartments[i].ApartmentId">Szczegóły</a> <br />
+                                    <a asp-action="Create" asp-route-id="@Model.Apartments[i].ApartmentId">Rezerwuj</a>
+                                </th>
+                                @Html.HiddenFor(x => x.Apartments[i].ApartmentId)
+                                @Html.HiddenFor(x => x.Apartments[i].Adress)
+                                @Html.HiddenFor(x => x.Apartments[i].Description)
+                                @Html.HiddenFor(x => x.Apartments[i].Location)
+                                @Html.HiddenFor(x => x.Apartments[i].OwnerId)
+                                @Html.HiddenFor(x => x.Apartments[i].PriceBasic)
+                                @Html.HiddenFor(x => Model.Apartments[i].ApartmentId)
+                                @Html.HiddenFor(x => Model.Apartments[i].Adress)
+                                @Html.HiddenFor(x => Model.Apartments[i].Description)
+                                @Html.HiddenFor(x => Model.Apartments[i].Location)
+                                @Html.HiddenFor(x => Model.Apartments[i].OwnerId)
+                                @Html.HiddenFor(x => Model.Apartments[i].PriceBasic)
+                            </tr>
+                                        }
+                      }
                 </tbody>
             </table>
 
         </div>
         <div class="form-horizontal leftside" id="first">
             <h4>Filtry</h4>
-            <hr/>
+            <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label style="width: 50%; text-align: left" class="control-label col-md-2"> Cena za dzień</label>
@@ -145,9 +147,9 @@
                 </span>
                 <div class="col-md-10" style="display: inline">
 
-                    <input asp-for="PriceMin" class="form-control" style="width: 35%; display: inline"/>
+                    <input asp-for="PriceMin" class="form-control" style="width: 35%; display: inline" />
                     <label> &nbsp; - &nbsp;</label>
-                    <input asp-for="PriceMax" class="form-control" style="width: 35%; display: inline"/>
+                    <input asp-for="PriceMax" class="form-control" style="width: 35%; display: inline" />
                     &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;od &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;do
                 </div>
             </div>
@@ -160,10 +162,10 @@
                     @Html.CheckBoxFor(x => Model.UseDate)
                 </span>
                 <div class="col-md-10">
-                    
-                    <input asp-for="DateFrom" type="date" min="@DateTime.Now.Date" class="form-control" style="width: 35%; display: inline"/>
+
+                    <input asp-for="DateFrom" type="date" min="@DateTime.Now.Date" class="form-control" style="width: 35%; display: inline" />
                     <label> &nbsp; - &nbsp;</label>
-                    <input asp-for="DateTo" type="date" class="form-control" style="width: 35%; display: inline"/>
+                    <input asp-for="DateTo" type="date" class="form-control" style="width: 35%; display: inline" />
                     &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;od &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;do
                 </div>
             </div>
@@ -175,10 +177,10 @@
                     @Html.CheckBoxFor(x => Model.UseRate)
                 </span>
                 <div class="col-md-10">
-                    
-                    <input asp-for="RateMin" type="range" min="1" max="5" step="2" style="width: 35%; display: inline"/>
+
+                    <input asp-for="RateMin" type="range" min="1" max="5" step="2" style="width: 35%; display: inline" />
                     <label> &nbsp; - &nbsp;</label>
-                    <input asp-for="RateMax" type="range" min="1" max="5" step="0,5" style="width: 35%; display: inline"/>
+                    <input asp-for="RateMax" type="range" min="1" max="5" step="0,5" style="width: 35%; display: inline" />
                     <span>
                         &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;od &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;do
                     </span>
@@ -205,7 +207,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-8 col-md-10">
-                    <input type="submit" value="Szukaj" class="btn btn-default"/>
+                    <input type="submit" value="Szukaj" class="btn btn-default" />
                 </div>
             </div>
         </div>

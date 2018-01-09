@@ -134,11 +134,7 @@ namespace test3.Data
 
                 entity.Property(e => e.ClientId).HasColumnName("ClientID");
 
-                entity.Property(e => e.Comment).IsRequired();
-
                 entity.Property(e => e.FromDate).HasColumnType("date");
-
-                entity.Property(e => e.OwnerReply).IsRequired();
 
                 entity.Property(e => e.RateId).HasColumnName("RateID");
 
@@ -161,13 +157,12 @@ namespace test3.Data
                 entity.HasOne(d => d.Rate)
                     .WithMany(p => p.Reservation)
                     .HasForeignKey(d => d.RateId)
-                    .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_Reservation_Rate");
             });
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.Property(e => e.UserId).HasColumnName("UserId");
+                entity.Property(e => e.UserId).HasColumnName("UserID");
 
                 entity.Property(e => e.DateOfBirth).HasColumnType("date");
 

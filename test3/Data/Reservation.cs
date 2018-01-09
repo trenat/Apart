@@ -11,7 +11,7 @@ namespace test3.Data
         public string Comment { get; set; }
         public DateTime? FromDate { get; set; }
         public string OwnerReply { get; set; }
-        public int RateId { get; set; }
+        public int? RateId { get; set; }
         public string Status { get; set; }
         public DateTime? ToDate { get; set; }
         public decimal? TotalCost { get; set; }

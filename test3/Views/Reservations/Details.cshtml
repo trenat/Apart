@@ -1,3 +1,4 @@
+﻿@using test3.Data
 @model test3.Data.Reservation
 
 @{
@@ -10,63 +11,121 @@
     <h4>Reservation</h4>
     <hr />
     <dl class="dl-horizontal">
+
         <dt>
-            @Html.DisplayNameFor(model => model.Comment)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Comment)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.FromDate)
+            Rezerwacja od:
         </dt>
         <dd>
             @Html.DisplayFor(model => model.FromDate)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.OwnerReply)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.OwnerReply)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ToDate)
+            Rezerwacja do:
         </dt>
         <dd>
             @Html.DisplayFor(model => model.ToDate)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.TotalCost)
+            Status:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt>
+            Koszt za dzień:
         </dt>
         <dd>
             @Html.DisplayFor(model => model.TotalCost)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Apartment)
+            Lokalizacja:
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Apartment.Adress)
+            @Html.DisplayFor(model => model.Apartment.Location)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Client)
+            Klient:
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Client.UserId)
+            @Html.DisplayFor(model => model.Client.Name)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Rate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Rate.RateId)
-        </dd>
+        @if (Model.Status.StartsWith("Ocze"))
+        {
+            <dt style="margin-top: 5px;">
+                Potwierdzić
+            </dt>
+            <dd>
+                <input type="button" value="Tak" style="width: 9%" class="form-control" onclick="location.href='@Url.Action("ConfirmReserv", "Reservations", new { id = @Model.ReservationId, conf = false})'" />
+                <input type="button" value="Nie" style="width: 9%" class="form-control" onclick="location.href='@Url.Action("ConfirmReserv", "Reservations", new { id = @Model.ReservationId, conf = true })'" />
+            </dd>
+        }
+
+        @if (Model.Status.StartsWith("Odbyto") || Model.Status.StartsWith("Skomentowano") || Model.Status.StartsWith("OK"))
+        {
+            <dt>
+                Ocena:
+            </dt>
+            <dd>
+                @{
+
+                    decimal? rate = null;
+                    if (Model.Rate != null)
+                    {
+                        rate = Model.Rate.RateLevel;
+                    }
+                    @if (rate == null)
+                    {
+                        rate = 0;
+                    }
+                    @Html.DisplayFor(model => rate)
+
+                }
+            </dd>
+                    if (Model.Comment != null)
+                    {
+                        <dt>
+                            Komentarz
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Comment)
+                        </dd>
+                        if (Model.OwnerReply != null)
+                        {
+                            <dt>
+                                Odpowiedź właściciela
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.OwnerReply)
+                            </dd>
+                        }
+                        else
+                        {
+                            <dt>
+                                <input asp-for="OwnerReply" />
+                                <input type="button" value="Dodaj odpowiedź">
+                            </dt>
+                            <dd>
+                                <input asp-for="OwnerReply" />
+                                <input type="button" value="Dodaj odpowiedź">
+                            </dd>
+                            }
+                        }
+                    }
+                    else if (Model.Status.StartsWith("Zatwierdzono") && DateTime.Now.CompareTo((DateTime)Model.ToDate) != 0)
+                    {
+
+                        <dt style="margin-top: 5px;">
+                            Czas rezerwacji minął
+                        </dt>
+                        <dd>
+                            @*ViewData["User"].ToString() == Model.ClientId.ToString()*@
+
+                            <input type="button" value="Potwierdź" style="width: 9%" class="form-control" onclick="location.href='@Url.Action("ConfirmTime", "Reservations", new { id = @Model.ReservationId})'" />
+                        </dd>
+                    }
+
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ReservationId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-controller="Manage">Wróć do zarządzania</a>
 </div>

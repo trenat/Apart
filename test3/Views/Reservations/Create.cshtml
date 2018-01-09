@@ -1,5 +1,5 @@
 ﻿@using System
-@model test3.Data.Reservation
+@model test3.Models.ReservationViewModel.CreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -12,19 +12,30 @@
         <h4>Reservation</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-       <div class="form-group">
-            <label asp-for="FromDate" class="col-md-2 control-label"></label>
+
+        @Html.HiddenFor(x => Model.ApartId)
+        <div class="form-group">
+            <label asp-for="DateFrom" class="col-md-2 control-label">Rezerwacja od</label>
             <div class="col-md-10">
-                <input asp-for="FromDate"  type="date"/>
-                <span asp-validation-for="FromDate" class="text-danger"></span>
+                <input asp-for="DateFrom" type="date" />
+                <span asp-validation-for="DateFrom" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="ToDate" class="col-md-2 control-label"></label>
+            <label asp-for="DateTo" class="col-md-2 control-label">Rezerwacja do</label>
             <div class="col-md-10">
-                <input asp-for="ToDate"  type="date" />
-                <span asp-validation-for="ToDate" class="text-danger"></span>
+                <input asp-for="DateTo" type="date" />
+                <span asp-validation-for="DateTo" class="text-danger"></span>
             </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Price" class="col-md-2 control-label">Cena:</label>
+            <span style="margin-left: 1%">
+                @Html.HiddenFor(x => Model.Price)
+                @Html.DisplayFor(x => Model.Price)
+            </span>
+              
+            
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

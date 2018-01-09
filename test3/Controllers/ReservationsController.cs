@@ -8,8 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGeneration;
 using test3.Data;
+using test3.Models;
+using test3.Models.ApartmentViewModels;
 using test3.Models.ManageViewModels;
 using test3.Models.ReservationViewModel;
+using test3.Services;
 
 namespace test3.Controllers
 {
@@ -36,10 +39,12 @@ namespace test3.Controllers
     public class ReservationsController : Controller
     {
         private readonly eadiApartDbContext _context;
+        private MyUserManager _userManager;
 
-        public ReservationsController(eadiApartDbContext context)
+        public ReservationsController(eadiApartDbContext context, MyUserManager userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Reservations
@@ -146,7 +151,7 @@ namespace test3.Controllers
                 }
                 if (model.UsePrice)
                 {
-                    if (model.PriceMin < model.PriceMax)
+                    if (model.PriceMin > model.PriceMax)
                     {
                         if (model.Apartments != null)
                             model.Apartments.Clear();
@@ -162,7 +167,7 @@ namespace test3.Controllers
                 }
                 if (model.UseRate)
                 {
-                    if (model.RateMin < model.RateMax)
+                    if (model.RateMin > model.RateMax)
                     {
                         if (model.Apartments != null)
                             model.Apartments.Clear();
@@ -204,6 +209,8 @@ namespace test3.Controllers
             return View();
         }
         // GET: Reservations/Details/5
+
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -220,9 +227,38 @@ namespace test3.Controllers
             {
                 return NotFound();
             }
-
+            
+            var appUser = await _userManager.GetUserAsync(HttpContext.User);
+            ViewData["User"] = appUser.UserId;
             return View(reservation);
         }
+
+        [Authorize]
+        public IActionResult ConfirmTime(int? id)
+        {
+            var reserv = _context.Reservation.FirstOrDefault(r => r.ReservationId == id);
+            reserv.Status = "Odbyto";
+            _context.Reservation.Update(reserv);
+            _context.SaveChanges();
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        [Authorize]
+        public IActionResult ConfirmReserv(int? id, bool conf)
+        {
+            var reserv = _context.Reservation.FirstOrDefault(r => r.ReservationId == id);
+            if(conf)
+                reserv.Status = "Odrzucono";
+            else
+            {
+                reserv.Status = "Zatwierdzono";
+            }
+
+            _context.Reservation.Update(reserv);
+            _context.SaveChanges();
+            return RedirectToAction("Details", new { id = id });
+        }
+
 
         // GET: Reservations/Create
         [Authorize]
@@ -237,6 +273,7 @@ namespace test3.Controllers
             model.ApartId = (int)id;
             model.DateFrom = DateTime.Now;
             model.DateTo = DateTime.Now;
+            model.Price = _context.Apartment.FirstOrDefault(x => x.ApartmentId == id).PriceBasic;
             return View(model);
         }
         
@@ -248,14 +285,28 @@ namespace test3.Controllers
             var apart = _context.Apartment
                 .Include(ap => ap.Reservation)
                 .FirstOrDefault(x => x.ApartmentId == model.ApartId);
-
-            if (apart.Reservation.Any(res => res.FromDate.InRange(model.DateFrom, model.DateTo) &&
-                                                       res.ToDate.InRange(model.DateFrom, model.DateTo)))
+            if (apart.Reservation != null)
             {
-                ModelState.AddModelError(string.Empty, "Nie mo¿esz zarezerwowaæ");
-                return View(model);
+                if (model.DateFrom.CompareTo(model.DateTo)>0 ||
+                    apart.Reservation.Any(res => res.FromDate.InRange(model.DateFrom, model.DateTo) &&
+                                                 res.ToDate.InRange(model.DateFrom, model.DateTo)))
+                {
+                    ModelState.AddModelError(string.Empty, "Nie mo¿esz zarezerwowaæ, zmieñ datê");
+                    return View(model);
+                }
             }
-            ModelState.AddModelError(string.Empty, "mo¿esz zarezerwowaæ");
+            var appUser = await _userManager.GetUserAsync(HttpContext.User);
+            Reservation reserv = new Reservation();
+            reserv.Apartment = apart;
+            reserv.ClientId = appUser.UserId;
+            reserv.Status = "Oczekiwanie";
+            reserv.TotalCost = apart.PriceBasic;
+            reserv.FromDate = model.DateFrom;
+            reserv.ToDate = model.DateTo;
+            _context.Reservation.Add(reserv);
+            _context.SaveChanges();
+
+            ModelState.AddModelError(string.Empty, "Zarezerwowano");
             return View(model);
         }
 

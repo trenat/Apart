@@ -48,7 +48,9 @@ namespace test3.Controllers
             {
                 Apartments = eadiApartDbContext,
                 User = apUser,
-                Reservations = new List<Reservation>()
+                Reservations = _context.Reservation
+                                       .Include(r => r.Apartment)
+                                       .Where(x => x.ClientId == apUser.UserId).ToList()
                 
             });
         }

@@ -11,9 +11,9 @@ namespace test3.Models.ReservationViewModel
     {
         public decimal PriceMin { get; set; }
         public decimal PriceMax { get; set; }
-        [InYearRange]
+        //[InYearRange]
         public DateTime DateFrom { get; set; } = DateTime.Now;
-        [InYearRange]
+        //[InYearRange]
         public DateTime DateTo { get; set; } = DateTime.Now;
 
         public int RateMin { get; set; } 
@@ -31,6 +31,7 @@ namespace test3.Models.ReservationViewModel
         public DateTime DateFrom { set; get; }
         public DateTime DateTo { set; get; }
         public int ApartId { set; get; }
+        public decimal Price { set; get; }
 
     }
 
